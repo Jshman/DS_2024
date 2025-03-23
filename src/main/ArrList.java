@@ -38,6 +38,7 @@ public class ArrList<E> {
             b[i] = a[i];
         }
         a = b.clone(); // 깊은 복사 (독립된 메모리를 사용한다.)
+        size = a.length;
     }
 
     public E deleteLast() {
