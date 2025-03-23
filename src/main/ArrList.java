@@ -32,6 +32,12 @@ public class ArrList<E> {
      */
     private void resize(int newSize) {
         // TODO resize 함수를 완성하시오.
+        E[] b = (E[]) new Object[newSize];
+
+        for (int i=0; i<Math.min(a.length, newSize); i++) {
+            b[i] = a[i];
+        }
+        a = b.clone();
     }
 
     public E deleteLast() {
