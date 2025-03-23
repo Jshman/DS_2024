@@ -37,7 +37,7 @@ public class ArrList<E> {
         for (int i=0; i<Math.min(a.length, newSize); i++) {
             b[i] = a[i];
         }
-        a = b.clone(); // 깊은 복사 (독립된 메모리를 사용)
+        a = b.clone(); // 깊은 복사 (독립된 메모리를 사용한다.)
     }
 
     public E deleteLast() {
