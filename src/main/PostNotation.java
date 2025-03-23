@@ -51,27 +51,18 @@ public class PostNotation {
             } else {
                 int n2 = nums.pop();
                 int n1 = nums.pop();
-                int result = 0;
-                switch (c) {
-                    case '+':
-                        result = n1 + n2;
-                        break;
-                    case '-':
-                        result = n1 - n2;
-                        break;
-                    case '*':
-                        result = n1 * n2;
-                        break;
-                    case '/':
-                        result = n1 / n2; //소수점 버림
-                        break;
-                }
+                int result = switch (c) {
+                    case '+' -> n1 + n2;
+                    case '-' -> n1 - n2;
+                    case '*' -> n1 * n2;
+                    case '/' -> n1 / n2;
+                    default -> 0; //소수점 버림
+                };
                 nums.push(result);
             }
         }
 
-        int answer = nums.pop();
-        return answer;
+        return nums.pop();
     }
 
     private int getNumber(char alphabet) {
