@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class ArrayQueue<E> {
@@ -21,24 +22,61 @@ public class ArrayQueue<E> {
     public E element() {
         // TODO 큐의 맨 앞의 원소를 반환하는 코드를 작성하시오
         // TODO 큐가 비어있다면 NoSuchElementException 예외를 발생시키시오
-        return null;
+        if (isEmpty()) {throw new NoSuchElementException();}
+        E item = queue[front];
+
+        return item;
     }
 
     public void add(E item) {
         // TODO 큐에 item을 추가하는 코드를 작성하시오
         // TODO item이 null이라면 NullPointerException 예외를 발생시키시오
         // TODO 큐가 꽉 차있으면 길이를 resize()를 활용하여 2배로 늘리시오
+        if (item == null) {throw new NullPointerException();}
+        if (size > 0 && queue[size()-1] != null) {resize(size() * 2);}
+        else if (size == 0) {size++;}
+        queue[rear] = item;
+//        System.out.println(rear);
+
+        rear = 0;
+        for (int i=0; i<size(); i++){
+            if (queue[i] != null) {rear++;}
+            else {break;}
+        }
     }
 
     private void resize(int newSize) {
         // TODO resize를 완성시키시오
+        E[] tmp = (E[]) new Object[newSize];
+        for (int i=0; i<Math.min(newSize, size()); i++) {
+            tmp[i] = queue[i];
+        }
+        queue = tmp.clone();
+        size = newSize;
     }
 
     public E remove() {
         // TODO 큐에서 item을 반환하고 삭제하는 코드를 작성하시오
         // TODO 큐가 비어있다면 NoSuchElementException 예외를 발생시키시오
         // TODO 큐가 배열의 1/4만 사용하고 있다면, 길이를 resize()를 활용하여 절반으로 줄이시오
-        return null;
+        if (isEmpty() || queue[front] == null) {throw new NoSuchElementException();}
+        if (rear == queue.length/4) {resize(size()/2);}
+
+        E item = queue[front];
+
+        E[] tmp = (E[]) new Object[size()];
+        for (int i=0; i<size()-1; i++) {
+            tmp[i] = queue[i+1];
+        }
+        queue = tmp.clone();
+        size--;
+
+        rear = 0;
+        for (int i=0; i<size(); i++){
+            if (queue[i] != null) {rear++;}
+            else {break;}
+        }
+        return item;
     }
 
     public int size() {
