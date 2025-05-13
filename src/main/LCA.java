@@ -4,12 +4,8 @@ public class LCA {
 
     private final BinaryTree<Integer> binaryTree;
 
-    private int[] table;
 
-    public LCA(BinaryTree<Integer> binaryTree) {
-        this.binaryTree = binaryTree;
-        table = new int[binaryTree.size() +1];
-    }
+    public LCA(BinaryTree<Integer> binaryTree) {this.binaryTree = binaryTree;}
 
     public int getLCA(int a, int b) {
         return getLCA(a, b, binaryTree.getRoot());
