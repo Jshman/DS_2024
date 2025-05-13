@@ -1,5 +1,7 @@
 package main;
 
+import java.util.NoSuchElementException;
+
 public class CDList<E> {
 
     private DNode<E> head;
@@ -24,23 +26,75 @@ public class CDList<E> {
      * <br>1 4 5
      */
     public CDList() {
+        head = null;
+        size = 0;
     }
 
     public boolean isEmpty() {
         // TODO CDList가 비어있는지 여부를 반환하시오.
-        return false;
+        return head == null;
     }
 
     public void insert(int index, E newItem) {
         // TODO head가 0번째 일 때 index번 째에 newItem 값을 삽입하도록 구현하시오.
         // TODO index가 올바르지 않을 때 IndexOutOfBoundsException 예외를 발생시키시오.
+        if (size < index) {throw new IndexOutOfBoundsException();}
+        DNode newNode = new DNode<>(newItem);
+
+        if (isEmpty()) {
+            newNode.setPrevious(newNode);
+            newNode.setNext(newNode);
+            head = newNode;
+            size++;
+            return;
+        }
+
+        DNode c = head;
+        for (int i=0; i<index; i++) {
+            c = c.getNext();
+        }
+        // newNode를 pre(current의 이전)와 current 사이에 삽입
+        DNode pre = c.getPrevious();
+
+        pre.setNext(newNode);
+        newNode.setPrevious(pre);
+
+        c.setPrevious(newNode);
+        newNode.setNext(c);
+
+        size++;
+        if (index == 0) {head = newNode;}
     }
 
     public E delete(int index) {
         // TODO head가 0번째 일 때 index번 째의 노드의 data를 반환하고 삭제하시오.
         // TODO 리스트가 비어있을 때 NoSuchElementException 예외를 발생시키시오.
         // TODO index가 올바르지 않을 때 IndexOutOfBoundsException 예외를 발생시키시오.
-        return null;
+        if (isEmpty()) {throw new NoSuchElementException();}
+        if (size <= index) {throw new IndexOutOfBoundsException();}
+        if (size == 1) {
+            E ret = (E) head.getData();
+            head = null;
+            return ret;
+        }
+
+        DNode c = head;
+        for (int i=0; i<index; i++) {c = c.getNext();}
+        DNode pre = c.getPrevious();
+        DNode next = c.getNext();
+//        System.out.printf("pre:%d , curr:%d , next:%d\n", pre.getData(), c.getData(), next.getData());
+//        System.out.println("pre:"+pre.getData()+" curr:"+c.getData()+" next:"+next.getData());
+//        이게 있으니깐 틀림 주의
+
+        pre.setNext(next);
+        next.setPrevious(pre);
+
+        c.setPrevious(null);
+        c.setNext(null);
+        size--;
+
+        if (index == 0) {head = next;}
+        return ((E) c.getData());
     }
 
     public String printall() {

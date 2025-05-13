@@ -22,6 +22,7 @@ public class MainJava {
         for(int e : deletes) {
             list.delete(e);
         }
+
         System.out.println(list.printall());
     }
 }
