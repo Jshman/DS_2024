@@ -4,8 +4,11 @@ public class LCA {
 
     private final BinaryTree<Integer> binaryTree;
 
+    private int[] table;
+
     public LCA(BinaryTree<Integer> binaryTree) {
         this.binaryTree = binaryTree;
+        table = new int[binaryTree.size() +1];
     }
 
     public int getLCA(int a, int b) {
@@ -27,6 +30,19 @@ public class LCA {
      */
     private int getLCA(int a, int b, Node<Integer> node) {
         // TODO item이 a와 b인 Node들의 최소 공통 조상 LCA의 item을 반환하는 코드를 작성하시오.
-        return 0;
+
+        if (node == null) {return -1;}
+        if (node.getItem() == a) {return node.getItem();}
+        if (node.getItem() == b) {return node.getItem();}
+
+        int lca = -1;
+        int left = getLCA(a, b, node.getLeft());
+        int right = getLCA(a, b, node.getRight());
+
+        if (left != -1 && right != -1) {lca = node.getItem();}
+        else if (left != -1) {lca = left;}
+        else if (right != -1) {lca = right;}
+
+        return lca;
     }
 }
