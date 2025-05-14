@@ -39,7 +39,7 @@ public class BST<Key extends Comparable<Key>, Value> extends Tree<Key, Value> {
 
     @Override
     public void delete(Key key) {
-        super.setRoot(delete(super.getRoot(), key));
+        super.setRoot(deleteAll(super.getRoot(), key));
     }
 
     public Node<Key, Value> delete(Node<Key, Value> node, Key key) {
@@ -71,6 +71,17 @@ public class BST<Key extends Comparable<Key>, Value> extends Tree<Key, Value> {
         }
 
         return node;
+    }
+
+    public Node<Key, Value> deleteAll(Node<Key, Value> root, Key key) {
+        if (root == null) return null;
+
+        //왼쪽, 오른쪽 서브트리에서 삭제
+        root.setLeft(deleteAll(root.getLeft(), key));
+        root.setRight(deleteAll(root.getRight(), key));
+
+        if (root.getKey().compareTo(key) == 0) {return delete(root, key);}
+        return root;
     }
 
     private Key max() {
