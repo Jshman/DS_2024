@@ -19,16 +19,18 @@ public class BST<Key extends Comparable<Key>, Value> extends Tree<Key, Value> {
     private Node<Key, Value> put(Node<Key, Value> node, Key key, Value value) {
         // TODO 해당 메소드를 완성하시오.
         if (node == null) {return null;}
-
+//        if (super.getRoot() == null) {super.setRoot(new Node(key, value));}
         int compare = key.compareTo(node.getKey());
-//        System.out.println("compare: "+compare);
+
         Node<Key, Value> child;
-        if (compare >= 0) {
+        // key가 같은 것은 삽입 X
+        if (compare == 0) {return node;}
+        else if (compare > 0) {
             child = node.getLeft();
             if (child != null) {put(node.getLeft(), key, value); return node;}
             node.setLeft(new Node<>(key, value));
         }
-        else {
+        else if (compare < 0){
             child = node.getRight();
             if (child != null) {put(node.getRight(), key, value); return node;}
             node.setRight(new Node<>(key, value));
@@ -39,7 +41,7 @@ public class BST<Key extends Comparable<Key>, Value> extends Tree<Key, Value> {
 
     @Override
     public void delete(Key key) {
-        super.setRoot(deleteAll(super.getRoot(), key));
+        super.setRoot(delete(super.getRoot(), key));
     }
 
     public Node<Key, Value> delete(Node<Key, Value> node, Key key) {
@@ -47,7 +49,7 @@ public class BST<Key extends Comparable<Key>, Value> extends Tree<Key, Value> {
         // TODO 강의 자료와 다르게 max와 deleteMax를 사용합시다.
         // key 가 일치하는 node를 찾아서 삭제하는 메서드인 것 같은데
         // 어떻게 max와 deleteMax를 사용할 수 있을까
-        // 아몰랑
+
         if (node == null) {return null;}
 
         int compare = key.compareTo(node.getKey());
@@ -71,22 +73,6 @@ public class BST<Key extends Comparable<Key>, Value> extends Tree<Key, Value> {
         }
 
         return node;
-    }
-
-    public Node<Key, Value> deleteAll(Node<Key, Value> root, Key key) {
-        if (root == null) return null;
-
-        //왼쪽, 오른쪽 서브트리에서 삭제
-        root.setLeft(deleteAll(root.getLeft(), key));
-        root.setRight(deleteAll(root.getRight(), key));
-
-        if (root.getKey().compareTo(key) == 0) {return delete(root, key);}
-        return root;
-    }
-
-    private Key max() {
-        if (super.getRoot() == null) return null;
-        return max(super.getRoot()).getKey();
     }
 
     /**
@@ -162,7 +148,7 @@ public class BST<Key extends Comparable<Key>, Value> extends Tree<Key, Value> {
         // TODO key가 존재하지 않는다면 null을 반환하시오.
 
         Node<Key, Value> curr = node;
-        int compare = 0;
+        int compare;
 
         while (curr != null) {
             compare = key.compareTo(curr.getKey());
